@@ -1,0 +1,49 @@
+diff --git a/watoi/main.m b/watoi/main.m
+index f50acbf..665522a 100644
+--- a/watoi/main.m
++++ b/watoi/main.m
+@@ -291,6 +291,7 @@ int main(int argc, const char * argv[]) {
+ 
+     for (NSDictionary *achat in androidChats) {
+         NSString *chatJID = [achat objectForKey:@"raw_string_jid"];
++        if ((id) chatJID == [NSNull null] || chatJID == nil) { NSLog(@"skipping chat with null jid"); continue; }
+         NSManagedObject *chat = [self.chats objectForKey:chatJID];
+         NSMutableDictionary *members = nil;
+         BOOL isGroup = FALSE;
+@@ -354,8 +355,13 @@ int main(int argc, const char * argv[]) {
+             NSString *memberJID = [amember objectForKey:@"jid"];
+             NSManagedObject *member = nil;
+ 
++            if ((id) memberJID == [NSNull null] || memberJID == nil) {
++                NSLog(@"\t skipping member with null jid");
++                continue;
++            }
+             if ([memberJID isEqualToString:@""]) {
+                 // This entry corresponds to our account, should add it as well.
++                if (ourJID == nil) { continue; }
+                 memberJID = ourJID;
+             }
+ 
+@@ -463,13 +469,16 @@ int main(int argc, const char * argv[]) {
+                 [msg setValue:chatJID forKey:@"fromJID"];
+                 if (isGroup) {
+                     NSString *senderJID = [amsg objectForKey:@"remote_resource"];
+-                    NSManagedObject *member = [members objectForKey:senderJID];
+-                    if (member == nil) {
+-                        NSLog(@"\tmissing sender %@", senderJID);
+-                        member = [self addMissingMember:senderJID toChat:chatJID asAdmin:@NO];
++                    if ((id) senderJID != [NSNull null] && senderJID != nil) {
++                        NSManagedObject *member = [members objectForKey:senderJID];
++                        if (member == nil) {
++                            NSLog(@"\tmissing sender %@", senderJID);
++                            member = [self addMissingMember:senderJID toChat:chatJID asAdmin:@NO];
++                        }
++                        [msg setValue:member forKey:@"groupMember"];
++                    } else {
++                        NSLog(@"\tgroup message with null sender, leaving unlinked");
+                     }
+-
+-                    [msg setValue:member forKey:@"groupMember"];
+                 }
+             } else {
+                 [msg setValue:chatJID forKey:@"toJID"];

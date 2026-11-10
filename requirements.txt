@@ -1,0 +1,10 @@
+# Python packages for wa-android-to-iphone. Needs Python 3.11 or newer.
+# scripts/00-setup.sh installs these into .venv for you. By hand:
+#   python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+
+# Decrypts msgstore.db.crypt15 with the 64-digit key (version 0.2.0, pinned to an exact commit).
+# The [ocr] extra reads the key from a screenshot; that also needs Tesseract:  brew install tesseract
+wa-crypt-tools[ocr] @ git+https://github.com/ElDavoo/wa-crypt-tools@b6f67453d19e443f53f57da0361f3ef5e8b6821d
+
+# Image dimensions and thumbnails for imported photos and stickers.
+Pillow>=10

@@ -1,0 +1,32 @@
+# Build output and environments
+/build/
+/.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# NEVER commit personal data. The scripts keep it in ~/WA-Transfer (outside the repo); these rules are a
+# second line of defence in case someone copies files in here.
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.crypt12
+*.crypt14
+*.crypt15
+*.mcrypt1
+*.key
+key*.txt
+*key*.png
+*key*.jpg
+*screenshot*
+Manifest.plist
+Status.plist
+Info.plist
+*.momd/
+*.ipa
+*.thumb
+/work/
+/WA-Transfer/
+/backups/
+*.log
